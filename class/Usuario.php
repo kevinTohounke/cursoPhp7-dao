@@ -16,7 +16,7 @@ class Usuario{
     }
 
     public function getDeslogin(){
-        return $this->deslogin;
+        return $this->desLogin;
     }
 
     public function setDeslogin($value){
@@ -39,23 +39,7 @@ class Usuario{
         $this->dtCadastro = $value;
      }
 
-     public function loadById($id){
-         $sql = new Sql();
-
-         $results = $sql -> select("SELECT * FROM tb_usuarios where idUsuario = :ID", array(":ID"=>$id) );
-
-         if (count($results) > 0){
-
-            $row = $results[0];
-
-            $this->setIdUsuario($row['idUsuario']);
-            $this->setDeslogin($row['deslogin']);
-            $this->setDtCadastro($row['dtcadastro']);
-            $this->setDesSenha($row['dessenha']);
-
-
-         }
-     }
+    
 
      public function __toString(){
          return json_encode(array(
@@ -66,6 +50,56 @@ class Usuario{
             "dtcadastro"=>$this->getDtCadastro()
          ));
      }
+
+     public function loadById($id){
+        $sql = new Sql();
+
+        $results = $sql -> select("SELECT * FROM tb_usuarios where idUsuario = :ID", array(":ID"=>$id) );
+
+        if (count($results) > 0){
+
+           $row = $results[0];
+
+           $this->setIdUsuario($row['idUsuario']);
+           $this->setDeslogin($row['deslogin']);
+           $this->setDtCadastro($row['dtcadastro']);
+           $this->setDesSenha($row['dessenha']);
+
+
+        }
+    }
+
+    public function getList(){
+        $sql= new Sql();
+
+        return $sql->select("SELECT * from tb_usuarios ");
+    }
+
+    public function searchByLogin($login){
+       $sql = new Sql();
+
+       return $sql->select("SELECT * FROM tb_usuarios WHERE deslogin = :LG", array(":LG"=>$login));
+    }
+
+    /*public function verificaLogin($login, $senha){
+
+        $sql = new Sql();
+
+        $results = $sql -> select("SELECT * FROM tb_usuarios where deslogin = :LOG  AND dessenha = :PASS" , array(":LOG"=>$login , ":PASS"=>$senha) );
+
+        if (count($results) > 0){
+
+           $row = $results[0];
+
+           $this->setIdUsuario($row['idUsuario']);
+           $this->setDeslogin($row['deslogin']);
+           $this->setDtCadastro($row['dtcadastro']);
+           $this->setDesSenha($row['dessenha']);
+
+
+        }
+
+    }*/
 
 }
 
